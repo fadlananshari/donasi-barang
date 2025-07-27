@@ -57,9 +57,27 @@
         <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" required>
     </div>
 
+     {{-- Nomor Telepon --}}
+     <div class="mb-3">
+        <label for="phone_number" class="form-label">Nomor Telepon (Whatsapp)</label>
+        <input type="text" id="phone_number" name="phone_number" class="form-control rounded-4 p-3 " required/>
+        @error('phone_number')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
+    {{-- Address --}}
+    <div class="mb-3">
+        <label for="address">Alamat Lengkap</label>
+        <textarea id="address" name="address" class="form-control rounded-4 p-3 mt-2" required></textarea>
+        @error("address")
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
     <div class="mb-5">
         <label for="role" class="form-label d-block">Peran</label>
-        <select name="role" id="role" class="form-select w-100" required>
+        <select name="role" id="role" class="form-control w-100" required>
             <option value="" disabled selected>Pilih Peran</option>
             <option value="admin">Admin</option>
             <option value="penerima">Penerima</option>

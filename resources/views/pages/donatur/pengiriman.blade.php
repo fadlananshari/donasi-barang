@@ -5,8 +5,8 @@
 @section('active-menu-delivery', 'active text-success')
 
 @section('content')
-<div class="container mt-4">
-    <h5 class="mb-4 text-success fw-bold text-center">Daftar Barang Donasi Kamu</h5>
+<div class="container mt-3">
+    <h2 class="mb-4 fw-bold text-center">Daftar Barang Donasi Kamu</h1>
 
     <div class="row">
         @forelse ($donationItems as $item)
@@ -26,49 +26,61 @@
                     $status = $trackingData[$item->id]['summary']['status'];
                 }
 
-                // dd($status);
             @endphp
 
-            <div class="col-12 mb-3">
+            <a href="{{route('donatur.detailPengiriman' , $item->id)}}" class="col-6 mb-3 text-decoration-none">
                 <div class="card h-100 border-0 shadow">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between mb-3">
                             <div class="">
-                                <p class="card-title fw-semibold">{{ $proposal->title }}</p>
+                                <h5 class="card-title fw-semibold">{{ Str::limit($proposal->title, 40)}}</h5>
                             </div>
                             <div class="">
-                                @if ($status)
-                                    <small class="m-0 text-success small">
-                                        {{$status}}
-                                    </small>
-                                @endif
+                                    @if ($status == 'DELIVERED')
+                                        <small class="m-0 text-success text-capitalize">
+                                            {{ strtolower($status)  }}
+                                        </small>
+                                    @endif
+
+                                    @if ($status == 'ON PROCESS')
+                                        <small class="m-0 text-warning text-capitalize">
+                                            {{ strtolower($status)  }}
+                                        </small>
+
+                                    @endif
+
+                                    @if ($status == 'HILANG')
+                                        <small class="m-0 text-danger text-capitalize">
+                                            {{ strtolower($status)  }}
+                                        </small>
+                                    @endif                           
                             </div>
                         </div>
                     
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-5">
                                 <img src="{{ asset('storage/' . $proposal->image_campaign) }}" alt="Gambar Proposal" class="img-fluid rounded">
                             </div>
-                            <div class="col-md-8 my-auto">
-                                <p class="m-0">{{ $item->name }}</p>
-                                <p class="m-0 text-end small text-secondary">x {{ $item->quantity }} barang</p>
+                            <div class="col-7 my-auto">
+                                <p class="mb-2">{{ $item->name }}</p>
+                                <p class="m-0 small text-secondary">x {{ $item->quantity }} barang</p>
                             </div>
                         </div>
 
                         @if ($latest)
-                            <a href="{{route('donatur.detailPengiriman' , $item->id)}}" class="alert alert-success border-0 mt-3 d-block text-decoration-none">
+                            <div class="alert alert-success border-0 mt-3 mb-0 d-block text-decoration-none">
                                 <p class="m-0 text-success"><span class="fw-semibold">Status terbaru:</span> {{ $latest['desc'] }}</p>
                                 <small class="text-muted text-success">{{ \Carbon\Carbon::parse($latest['date'])->format('d M Y H:i') }}</small>
-                            </a>                        
+                            </div>                        
                         @else
-                            <div class="alert alert-warning mt-3">Status pengiriman tidak tersedia.</div>
+                            <div class="alert alert-warning mt-3 text-warning">Status pengiriman tidak tersedia.</div>
                         @endif
                     </div>
                 </div>
-            </div>
+            </a>
         @empty
-            <div class="col-12">
-                <div class="alert alert-info">Belum ada barang donasi yang kamu kirimkan.</div>
+            <div class="mt-5">
+                <p class="text-center small text-secondary">Belum ada barang donasi</p>
             </div>
         @endforelse
     </div>

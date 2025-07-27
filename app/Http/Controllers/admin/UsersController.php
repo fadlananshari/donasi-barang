@@ -30,16 +30,21 @@ class UsersController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'confirmed', 'min:6'],
+            'phone_number' => ['required'],
+            'address' => ['required'],
             'role' => ['required'],
         ], [
             'email.unique' => 'Email ini sudah terdaftar.',
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
 
+            'name.unique' => 'Nama ini sudah digunakan',
             'name.required' => 'Nama wajib diisi.',
             'password.required' => 'Kata sandi wajib diisi.',
             'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
             'password.min' => 'Kata sandi minimal 6 karakter.',
+            'phone_number.required' => 'Nomor telepon wajib diisi.',
+            'address.required' => 'Alamat wajib diisi.',
             'role.required' => 'Silakan pilih peran Anda.',
         ]);
         
@@ -55,6 +60,9 @@ class UsersController extends Controller
         Profile::create([
             'id_user' => $user->id,
             'name' => $validated['name'],
+            'phone_number' => $validated['phone_number'],
+            'address' => $validated['address'],
+            'category' => $validated['role'],
         ]);
 
         // Redirect atau login langsung
@@ -64,10 +72,21 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         // Validasi input
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'phone_number' => ['required'],
+            'address' => ['required'],
             'role' => 'required|in:admin,donatur,penerima',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email,' . $id,
+        ], [
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email ini sudah terdaftar.',
+
+            'name.required' => 'Nama wajib diisi.',
+            'phone_number.required' => 'Nomor telepon wajib diisi.',
+            'address.required' => 'Alamat wajib diisi.',
+            'role.required' => 'Silakan pilih peran Anda.',
         ]);
 
         // Ambil user dan profilnya
@@ -75,13 +94,16 @@ class UsersController extends Controller
         $profile = Profile::where('id_user', $id)->first();
 
         // Update user
-        $user->email = $request->email;
-        $user->role = $request->role;
+        $user->email = $validated['email'];
+        $user->role = $validated['role'];
         $user->save();
 
         // Update profile
         if ($profile) {
-            $profile->name = $request->name;
+            $profile->name = $validated['name'];
+            $profile->phone_number = $validated['phone_number'];
+            $profile->address = $validated['address'];
+            $profile->category = $validated['role'];
             $profile->save();
         }
 

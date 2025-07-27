@@ -2,7 +2,7 @@
 
 @section('title', 'Tambah Item Type')
 
-@section('active-menu-donation-types', 'active')
+@section('active-menu-item-types', 'active')
 
 @section('content')
 
@@ -10,7 +10,7 @@
     <h1 class="h3 mb-0 text-gray-800">Tambah Jenis Barang</h1>
 </div>
 
-<form action="{{ route('admin.storeDonationType') }}" method="POST" class="p-4 border rounded shadow-sm bg-white">
+<form action="{{ route('admin.storeItemType') }}" method="POST" class="p-4 border rounded shadow-sm bg-white">
     @csrf
 
     @if ($errors->any())
@@ -26,7 +26,7 @@
 
     {{-- Nama Tipe Donasi --}}
     <div class="mb-3">
-        <label for="name" class="form-label">Nama Jenis Donasi</label>
+        <label for="name" class="form-label">Nama Jenis Barang</label>
         <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
         @error('name')
             <small class="text-danger">{{ $message }}</small>

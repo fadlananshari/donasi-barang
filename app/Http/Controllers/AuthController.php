@@ -10,48 +10,50 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    public function loginView() {
+        return view('auth.login');
+    }
+
+    public function signupView() {
+        return view('auth.signup');
+    }
 
     // Proses login
     public function login(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-            'remember' => 'boolean',
-        ]);
+{
+    // Validasi input
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+        'remember' => 'nullable',
+    ]);
 
-        // Cek kredensial
-        $credentials = $request->only('email', 'password');
+    // Ambil kredensial
+    $credentials = $request->only('email', 'password');
 
-        // Login (remember = true jika dicentang)
-        $remember = $request->has('remember');
+    // Cek apakah checkbox "remember me" dicentang
+    $remember = $request->has('remember') && $request->input('remember') === 'on';
 
-        if (Auth::attempt($credentials, $remember)) {
-            $role = Auth::user()->role;
+    // Attempt login
+    if (Auth::attempt($credentials, $remember)) {
+        $role = Auth::user()->role;
 
-            // dd($role);
-            if( $role == "donatur" ){
-
-                return redirect('donatur');
-
-            } elseif( $role == "penerima" ){
-                
-                return redirect('penerima');
-                
-            } elseif( $role == "admin" ){
-
-                return redirect('admin');
-                
-            }
-          
+        // Redirect berdasarkan role
+        if ($role === 'donatur') {
+            return redirect()->intended('donatur');
+        } elseif ($role === 'penerima') {
+            return redirect()->intended('penerima');
+        } elseif ($role === 'admin') {
+            return redirect()->intended('admin');
         }
-
-        // Autentikasi gagal
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ])->withInput();
     }
+
+    // Autentikasi gagal
+    return back()->withErrors([
+        'email' => 'Email atau password salah.',
+    ])->withInput();
+}
+
 
     // Logout
     public function logout(Request $request)

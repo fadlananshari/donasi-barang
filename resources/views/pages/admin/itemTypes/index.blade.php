@@ -9,14 +9,14 @@
 
 @endsection
 
-@section('active-menu-donation-types', 'active')
+@section('active-menu-item-types', 'active')
 
 @section('content')
 
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Tabel Jenis Donasi</h1>
-    <a href="{{ route('admin.tambahDonationType') }}" class="btn btn-success">Tambah</a>
+    <a href="{{ route('admin.tambahItemType') }}" class="btn btn-success">Tambah</a>
 </div>
 
 @if(session('success'))
@@ -44,19 +44,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($donationTypes as $donationType)
+                    @foreach($itemTypes as $itemType)
                         <tr>
-                            <td>{{ $donationType->name }}</td>
+                            <td>{{ $itemType->name }}</td>
                             <td>
-                                @if ($donationType->status)
+                                @if ($itemType->status)
                                     <span class="badge badge-success">Aktif</span>
                                 @else
                                     <span class="badge badge-secondary">Nonaktif</span>
                                 @endif
                             </td>
                             <td class="d-flex">
-                                <a href="{{ route('admin.editDonationType', $donationType->id )}}" class="btn btn-warning mx-1"><i class="fas fa-edit"></i></a>
-                                <form action="{{ route('admin.deleteDonationType', $donationType->id )}}" method="post" class="mx-1">
+                                <a href="{{ route('admin.editItemType', $itemType->id )}}" class="btn btn-warning mx-1"><i class="fas fa-edit"></i></a>
+                                <form action="{{ route('admin.deleteItemType', $itemType->id )}}" method="post" class="mx-1">
                                     @csrf
                                     <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                 </form>

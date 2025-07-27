@@ -20,7 +20,7 @@ class DonationTypesController extends Controller
     public function edit($id)
     {
         $donationType = DonationType::findOrFail($id);
-        return view('pages.admin.itemtypes.edit', compact('donationType'));
+        return view('pages.admin.donationtypes.edit', compact('donationType'));
     }
 
     public function store(Request $request)

@@ -1,167 +1,96 @@
-@extends('layouts.pages')
+@extends('layouts.penerima')
 
 @section('title', 'Home')
 
-{{-- @section('custom_body_class', 'bg-secondary') --}}
+@section('custom_css')
+.hover-shadow {
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.18);
+  transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-@section('active-menu-home', 'active text-primary')
+.hover-shadow:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+  transform: translateY(-4px);
+}
 
-@section('content')
-<div class="container mt-4">
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Tambah Proposal Donasi</h1>
-    </div>
-    
-    <form action="{{ route('admin.storeProposal') }}" method="POST" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-white">
-        @csrf
-    
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <strong>Terjadi kesalahan:</strong>
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-    
-        <input type="hidden" name="id_profile" value="{{ Auth::user()->id }}">
-    
-        {{-- Judul --}}
-        <div class="mb-3">
-            <label for="title" class="form-label">Judul Proposal</label>
-            <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" required>
-        </div>
-    
-        {{-- Gambar Proposal --}}
-        <div class="mb-3">
-            <label for="image_campaign" class="form-label">Gambar Proposal</label>
-            <input type="file" class="form-control" id="image_campaign" name="image_campaign" accept="image/*" onchange="previewImageCampaign(event)" required>
-            <div class="my-3">
-                <img id="imageCampaignPreview" src="#" alt="Preview Gambar" class="img-thumbnail" style="display: none; max-height: 200px;">
-            </div>
-        </div>
-    
-        {{-- Gambar Surat --}}
-        <div class="mb-3">
-            <label for="image_letter" class="form-label">Gambar Surat Pendukung</label>
-            <input type="file" class="form-control" id="image_letter" name="image_letter" accept="image/*" onchange="previewImageLetter(event)" required>
-            <div class="my-3">
-                <img id="imageLetterPreview" src="#" alt="Preview Gambar" class="img-thumbnail" style="display: none; max-height: 200px;">
-            </div>
-        </div>
-    
-        {{-- Nomor Surat --}}
-        <div class="mb-3">
-            <label for="letter_number" class="form-label">Nomor Surat</label>
-            <input type="text" class="form-control" id="letter_number" name="letter_number" value="{{ old('letter_number') }}" required>
-        </div>
-    
-        {{-- Jenis Barang --}}
-        <div class="mb-3">
-            <label for="id_item_type" class="form-label">Jenis Barang</label>
-            <select name="id_item_type" id="id_item_type" class="form-control" required>
-                <option value="" disabled selected>-- Pilih Jenis Barang --</option>
-                @foreach ($itemTypes as $item)
-                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                @endforeach
-            </select>
-        </div>
-    
-        {{-- Cerita --}}
-        <div class="mb-3">
-            <label for="story" class="form-label">Cerita Singkat</label>
-            <textarea class="form-control" id="story" name="story" rows="4" required>{{ old('story') }}</textarea>
-        </div>
-    
-        {{-- Alamat --}}
-        <div class="mb-3">
-            <label for="address" class="form-label">Alamat Penerima</label>
-            <textarea class="form-control" id="address" name="address" rows="3" required>{{ old('address') }}</textarea>
-        </div>
-    
-        {{-- Status --}}
-        <div class="mb-4">
-            <label for="status" class="form-label">Status Proposal</label>
-            <select name="status" id="status" class="form-control" required>
-                <option value="1">Aktif</option>
-                <option value="0">Nonaktif</option>
-            </select>
-        </div>
-    
-        {{-- Daftar Barang --}}
-        <div class="mb-4">
-            <label class="form-label">Daftar Barang yang Diajukan</label>
-            <div id="itemsContainer">
-                <div class="item-group border p-3 mb-3 rounded bg-light">
-                    <div class="mb-2">
-                        <label>Nama Barang</label>
-                        <input type="text" name="items[0][name]" class="form-control" required>
-                    </div>
-                    <div>
-                        <label>Jumlah</label>
-                        <input type="text" name="items[0][quantity]" class="form-control" required>
-                    </div>
-                </div>
-            </div>
-            <button type="button" class="btn btn-outline-primary btn-sm" onclick="addItem()">+ Tambah Barang</button>
-        </div>
-    
-        <button type="submit" class="btn btn-primary w-100">Simpan Proposal</button>
-    </form>
-    
-</div>
 @endsection
 
-@section('custom_script')
-<script>
-    function previewImageCampaign(event) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('imageCampaignPreview').src = e.target.result;
-            document.getElementById('imageCampaignPreview').style.display = 'block';
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    }
+@section('active-menu-home', 'active text-success')
 
-    function previewImageLetter(event) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('imageLetterPreview').src = e.target.result;
-            document.getElementById('imageLetterPreview').style.display = 'block';
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    }
+@section('content')
+<section class="py-5">
 
-    let itemIndex = 1;
-    function addItem() {
-        const container = document.getElementById('itemsContainer');
-        const html = `
-            <div class="item-group border p-3 mb-3 rounded bg-light position-relative">
-                <button type="button" 
-                        class="btn btn-sm btn-danger" 
-                        style="position: absolute; top: 8px; right: 8px;" 
-                        aria-label="Close" 
-                        onclick="removeItem(this)">X</button>
-                <div class="mb-2">
-                    <label>Nama Barang</label>
-                    <input type="text" name="items[${itemIndex}][name]" class="form-control" required>
+    <div class="container">
+        {{-- HERO --}}
+        <div class="row align-items-center mb-5 mx-3">
+            <div class="col-md-5 mb-4 mb-md-0" data-aos="fade-right">
+            <img src="{{ asset('img/login.png') }}" alt="Donasi Ilustrasi" class="img-fluid" />
+            </div>
+            <div class="col-md-6" data-aos="fade-left">
+            <h1 class="display-5 fw-bold mb-3">Galang Donasi Jadi Lebih Mudah di <span class="text-success">BarangKita</span></h1>
+            <p class="text-muted mb-4">BarangKita membantu anda menggalang barang untuk mereka yang membutuhkan. Mulai dari panti asuhan, sekolah hingga korban bencana.</p>
+            <a href="{{ route('penerima.tambahProposal') }}" class="btn btn-success btn-lg px-4">Galang Sekarang</a>
+            </div>
+        </div>
+    
+        {{-- FITUR UTAMA --}}
+        <div class="text-center my-5 py-5 bg-success bg-opacity-10 px-5">
+            <h2 class="fw-bold mb-4">Mengapa Menggalang Donasi di <span class="text-success">BarangKita</span>?</h2>
+            <div class="row g-4 mt-4">
+            @php
+                $features = [
+                ['icon' => 'check-circle', 'title' => 'Mudah & Cepat', 'desc' => 'Buat proposal penggalangan donasi hanya dalam beberapa langkah mudah.'],
+                ['icon' => 'people-fill', 'title' => 'Jangkauan Luas', 'desc' => 'Proposal anda akan dilihat oleh donatur di seluruh Indonesia.'],
+                ['icon' => 'transparency', 'title' => 'Laporan Transparan', 'desc' => 'Lacak dan kelola donasi yang masuk dengan mudah melalui website.'],
+                ];
+            @endphp
+            @foreach($features as $feature)
+                <div class="col-md-4">
+                <div class="bg-white border-0 rounded-4 shadow-sm h-100 p-4 text-center" data-aos="fade-up" data-aos-delay="{{ $loop->index * 150 }}">
+                    <i class="bi bi-{{ $feature['icon'] }} text-success fs-1 mb-3"></i>
+                    <h5 class="fw-semibold mb-2">{{ $feature['title'] }}</h5>
+                    <p class="text-muted small">{{ $feature['desc'] }}</p>
                 </div>
-                <div>
-                    <label>Jumlah</label>
-                    <input type="text" name="items[${itemIndex}][quantity]" class="form-control" required>
                 </div>
-            </div>`;
-
-        container.insertAdjacentHTML('beforeend', html);
-        itemIndex++;
-    }
-
-    function removeItem(button) {
-        const itemGroup = button.closest('.item-group');
-        itemGroup.remove();
-    }
-
-</script>
+            @endforeach
+            </div>
+        </div>
+  
+        {{-- CARA GALANG DONASI --}}
+        <section class="py-5 position-relative">
+            <div class="container mb-5">
+                <h2 class="text-center fw-bold">Cara Menggalang Donasi</h2>
+                <p class="text-center text-gray-600 mb-5">Hanya dengan 3 langkah mudah, Anda sudah bisa memulai kebaikan.</p>
+                @php
+                    $steps = [
+                    ['icon' => 'file-earmark-text', 'title' => 'Buat Proposal', 'desc' => 'Isi formulir penggalangan donasi sesuai dengan kebutuhan anda.'],
+                    ['icon' => 'phone', 'title' => 'Sebar Proposal', 'desc' => 'Bagikan proposal Anda ke media sosial untuk menjangkau lebih banyak donatur.'],
+                    ['icon' => 'bank', 'title' => 'Terima Donasi', 'desc' => 'Pantau donasi yang masuk dan salurkan kepada yang membutuhkan.'],
+                    ];
+                @endphp
+            
+                <div class="row g-4 justify-content-center">
+                    @foreach($steps as $index => $step)
+                    <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="card h-100 border-0 rounded-4 text-center p-4 bg-white hover-shadow" data-aos="fade-up">
+                        <div class="text-success fs-1 mb-3">
+                            <i class="bi bi-{{ $step['icon'] }}"></i>
+                        </div>
+                        <h6 class="fw-bold mb-2">{{ $step['title'] }}</h6>
+                        <p class="text-muted small">{{ $step['desc'] }}</p>
+                    </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+      
+        {{-- CTA --}}
+        <div class="text-center mt-5 py-5 bg-success bg-opacity-10" data-aos="fade-up">
+            <h3 class="fw-bold text-success">Siap Membantu Mereka?</h3>
+            <p class="text-muted mb-4">Ayo mulai langkah kebaikanmu sekarang juga! Buat proposal penggalangan donasi dan bantu mereka yang membutuhkan di sekitarmu</p>
+            <a href="{{ route('penerima.tambahProposal') }}" class="btn btn-success px-4 py-2">Galang Sekarang</a>
+        </div>
+    </div>
+</div>
 @endsection

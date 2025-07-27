@@ -1,55 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  {{-- <!-- PWA  -->
-  <meta name="theme-color" content="#6777ef"/>
-  <link rel="apple-touch-icon" href="{{ asset('img/logo-barangkita.png') }}">
-  <link rel="manifest" href="{{ asset('/manifest.json') }}"> --}}
-  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- PWA -->
+  <meta name="theme-color" content="#6777ef" />
+  <link rel="apple-touch-icon" href="{{ asset('logo.png') }}" />
+  <link rel="manifest" href="{{ asset('/manifest.json') }}" />
+
   <title>Login - BarangKita</title>
-  <link rel="icon" type="image/png" href="{{ asset('img/logo-barangkita.png') }}">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" type="image/png" href="{{ asset('icon512_rounded.png') }}" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
   <style>
-    body {
-      font-family: "Spline Sans", "Noto Sans", sans-serif;
-      background-color: #f8fafc;
-    }
-    .bg-hero {
-      background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB8CNFAHwn-7oFV7EEfLqqYrqfk5Zx7UPqi_q9XPKCDV2wtU2wT7lGvm2otTRE_a5LHpWHsqpOy-XBjcFK_bcxkcKvHSXHldZyFy1Q3H4_3_qGfSfK-tBBfsg4K-CcXRoemerwQxJP6Clv7DP_HuOIGMU5o7SLxfPx24rMKNXYVLwSQmOCaB6dnxp6prSyEamlGY9zisqFcwEA7dGQomXmuq2ZRuLYMjyiY2zLm8HyQ3Q-Y2yqQCec_PRnXExum49C_zDUjnSoX8GE");
-      background-size: cover;
-      background-position: center;
-      border-radius: 1rem;
-      min-height: 218px;
+    .hero-img {
+      max-height: 300px;
+      object-fit: contain;
     }
     .form-control::placeholder {
       color: #4574a1;
     }
   </style>
 </head>
-<body class="bg-light">
-  <div class="">
-    <div class="card shadow px-5 mx-auto" style="max-width: 500px; min-height: 100vh;">
+<body>
+  <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="row w-100 rounded-4 overflow-hidden" style="max-width: 900px;">
+      <!-- Left Column -->
+      <div class="col-md-6 p-4 d-flex flex-column justify-content-center align-items-center text-center">
+        <img src="{{ asset('img/login.png') }}" alt="Hero Image" class="img-fluid hero-img mb-3" />
+        <p class="fw-medium text-dark">
+          Donasi dan terima barang bisa di <span class="fw-semibold text-success">BarangKita</span>
+        </p>
+      </div>
 
-      <div class="">
-        <img 
-          src="{{asset('img/login.png')}}"
-          alt="Hero Image"
-          class="img-fluid w-100 mb-4 rounded"
-          style="max-height: 300px; object-fit: contain;"
-        />
-
-        {{-- <img 
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8CNFAHwn-7oFV7EEfLqqYrqfk5Zx7UPqi_q9XPKCDV2wtU2wT7lGvm2otTRE_a5LHpWHsqpOy-XBjcFK_bcxkcKvHSXHldZyFy1Q3H4_3_qGfSfK-tBBfsg4K-CcXRoemerwQxJP6Clv7DP_HuOIGMU5o7SLxfPx24rMKNXYVLwSQmOCaB6dnxp6prSyEamlGY9zisqFcwEA7dGQomXmuq2ZRuLYMjyiY2zLm8HyQ3Q-Y2yqQCec_PRnXExum49C_zDUjnSoX8GE"
-          alt="Hero Image"
-          class="w-100 rounded mb-4"
-          style="max-height: 180px; object-fit: cover;"
-        /> --}}
-
-        <p class="text-center">Donasi dan terima barang bisa di <span class="fw-semibold text-success">BarangKita</span></p>
-        
-        <h1 class="text-center fw-bold fs-4 text-dark pb-3 pt-2">
+      <!-- Right Column -->
+      <div class="col-md-6 bg-white p-5">
+        <h1 class="text-center fw-bold fs-4 text-dark pb-3">
           Login
         </h1>
 
@@ -59,7 +46,7 @@
             <label for="email" class="form-label fw-medium text-dark">Email</label>
             <input
               type="email"
-              class="form-control rounded-4 p-3 bg-light border-0 text-dark"
+              class="form-control rounded-4 p-3 bg-light text-dark"
               name="email"
               id="email"
               placeholder="Masukkan email kamu"
@@ -75,7 +62,7 @@
             <label for="password" class="form-label fw-medium text-dark">Password</label>
             <input
               type="password"
-              class="form-control rounded-4 p-3 bg-light border-0 text-dark"
+              class="form-control rounded-4 p-3 bg-light text-dark"
               name="password"
               id="password"
               placeholder="Masukkan password kamu"
@@ -86,7 +73,6 @@
             @enderror
           </div>
 
-          <!-- Remember Me -->
           <div class="mb-3 form-check">
             <input type="checkbox" class="form-check-input" name="remember" id="remember">
             <label class="form-check-label" for="remember">Ingat saya</label>
@@ -100,14 +86,28 @@
         </form>
 
         <p class="text-center">
-          <a href="{{Route('home.signin')}}" class="small">
-            Belum Memiliki akun? daftar
+          <a href="{{ Route('home.signin') }}" class="small">
+            Belum memiliki akun? daftar
           </a>
         </p>
       </div>
     </div>
   </div>
 
-
+  <script src="{{ asset('/sw.js') }}"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").then(
+        (registration) => {
+          console.log("Service worker registration succeeded:", registration);
+        },
+        (error) => {
+          console.error(`Service worker registration failed: ${error}`);
+        }
+      );
+    } else {
+      console.error("Service workers are not supported.");
+    }
+  </script>
 </body>
 </html>

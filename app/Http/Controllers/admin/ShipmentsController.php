@@ -36,7 +36,7 @@ class ShipmentsController extends Controller
             $trackingData = $response['data'];
         }
 
-        // dd($trackingData);
+        // dd($trackingData, $response, $courierCode, $resi, env('BINDERBYTE_KEY'));
 
         return view('pages.admin.shipments.detail', compact('shipment', 'trackingData'));
     }

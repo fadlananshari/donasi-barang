@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- PWA  -->
+  <meta name="theme-color" content="#6777ef"/>
+  <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
+  <link rel="manifest" href="{{ asset('/manifest.json') }}">
+
   <title>Sign In - BarangKita</title>
-  <link rel="icon" type="image/png" href="{{ asset('img/logo-barangkita.png') }}">
+  <link rel="icon" type="image/png" href="{{ asset('icon512_rounded.png') }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-        font-family: "Spline Sans", "Noto Sans", sans-serif;
-        background-color: #f8fafc;
-      }
-  </style>
 </head>
-<body class="bg-light">
+<body>
   <div class="">
-      <div class="card shadow pt-4 px-5 mx-auto" style="max-width: 500px; min-height: 100vh;">
+      <div class="pt-4 px-5 mx-auto" style="max-width: 500px; min-height: 100vh;">
           <div class="d-flex align-items-center justify-content-between mb-3">
               <h2 class="text-center flex-grow-1 fw-semibold">Registrasi</h2>
           </div>
@@ -25,7 +26,7 @@
       
               {{-- Nama Lengkap --}}
               <div class="mb-3">
-                  <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Nama Lengkap" class="form-control rounded-4 p-3 bg-light border-0" required/>
+                  <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Nama Lengkap" class="form-control rounded-4 p-3 bg-light " required/>
                   @error('name')
                       <small class="text-danger">{{ $message }}</small>
                   @enderror
@@ -33,7 +34,7 @@
       
               {{-- Email --}}
               <div class="mb-3">
-                  <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="Email" class="form-control rounded-4 p-3 bg-light border-0" required/>
+                  <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="Email" class="form-control rounded-4 p-3 bg-light " required/>
                   @error('email')
                     <small class="text-danger">{{ $message }}</small>
                   @enderror
@@ -41,7 +42,7 @@
       
               {{-- Password --}}
               <div class="mb-3">
-                  <input type="password" name="password" id="password" placeholder="Password" class="form-control rounded-4 bg-light p-3 border-0" required/>
+                  <input type="password" name="password" id="password" placeholder="Password" class="form-control rounded-4 bg-light p-3 " required/>
                   @error('password')
                     <small class="text-danger">{{ $message }}</small>
                   @enderror
@@ -49,12 +50,12 @@
       
               {{-- Konfirmasi Password --}}
               <div class="mb-3">
-                  <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Konfirmasi Password" class="form-control rounded-4 bg-light p-3 border-0" required/>
+                  <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Konfirmasi Password" class="form-control rounded-4 bg-light p-3 " required/>
               </div>
       
               {{-- Nomor Telepon --}}
               <div class="mb-3">
-                  <input type="text" id="phone_number" name="phone_number" value="{{ old('phone_number') }}" placeholder="Nomor Handphone (Whatsapp)" class="form-control rounded-4 p-3 bg-light border-0" required/>
+                  <input type="text" id="phone_number" name="phone_number" value="{{ old('phone_number') }}" placeholder="Nomor Handphone (Whatsapp)" class="form-control rounded-4 p-3 bg-light " required/>
                   @error('phone_number')
                       <small class="text-danger">{{ $message }}</small>
                   @enderror
@@ -108,6 +109,24 @@
         alert('Kata sandi dan konfirmasi kata sandi tidak sama.');
       }
     });
+  </script>
+
+  <script src="{{ asset('/sw.js') }}"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+        // Register a service worker hosted at the root of the
+        // site using the default scope.
+        navigator.serviceWorker.register("/sw.js").then(
+        (registration) => {
+          console.log("Service worker registration succeeded:", registration);
+        },
+        (error) => {
+          console.error(`Service worker registration failed: ${error}`);
+        },
+      );
+    } else {
+      console.error("Service workers are not supported.");
+    }
   </script>
   
 </body>

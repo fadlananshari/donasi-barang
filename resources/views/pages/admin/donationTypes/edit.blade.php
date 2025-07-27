@@ -2,7 +2,7 @@
 
 @section('title', 'Edit Jenis Donasi')
 
-@section('active-menu-item-types', 'active')
+@section('active-menu-donation-types', 'active')
 
 @section('content')
 
@@ -22,7 +22,7 @@
     {{-- Status --}}
     <div class="mb-5">
         <label for="status" class="form-label d-block">Status</label>
-        <select name="status" id="status" class="form-select w-100" required>
+        <select name="status" id="status" class="form-control w-100" required>
             <option value="1" {{ $donationType->status == 1 ? 'selected' : '' }}>Aktif</option>
             <option value="0" {{ $donationType->status == 0 ? 'selected' : '' }}>Nonaktif</option>
         </select>

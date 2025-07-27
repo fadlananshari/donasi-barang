@@ -3,8 +3,16 @@
 @section('title', 'Donasi')
 @section('active-menu-donate', 'active text-success')
 
+@section('custom_css')
+.accordion-button:not(.collapsed) {
+    background-color: #d1e7dd; /* background hijau muda */
+    color: #0f5132; /* teks hijau gelap */
+  }
+  
+@endsection
+
 @section('content')
-<div class="container mt-4">
+<div class="container mt-3">
     @if($errors->any())
         <div class="alert alert-danger">
             <strong>Terjadi kesalahan:</strong>
@@ -19,17 +27,16 @@
     <form action="{{ route('donatur.donasiStore') }}" method="POST" class="mb-5">
         @csrf
 
-        <img src="{{ asset('storage/' . $proposal->image_campaign) }}" alt="" class="img-fluid mb-3">
+        <div class="mx-lg-5">
+            <img src="{{ asset('storage/' . $proposal->image_campaign) }}" alt="" class="img-fluid w-100">
+        </div>
         
-        <input type="hidden" name="id_profile" value="{{ Auth::user()->id }}">
+        <input type="hidden" name="id_profile" value="{{ $profile->id }}">
         <input type="hidden" name="id_donation_proposal" value="{{ $proposal->id }}">
 
-        <div class="form-group">
-            <label class="fw-semibold">Judul Proposal</label>
-            <p>{{ $proposal->title }}</p>
-        </div>
+        <h1 class="fs-1 fw-bold text-center">{{ $proposal->title }}</h1>
 
-        <div class="mt-4">
+        <div class="mt-5">
             <p class="fw-semibold">Detail Kebutuhan</p>
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -57,6 +64,71 @@
                         
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        {{-- Tata Cara Berdonasi --}}
+        <div class="accordion mb-4" id="accordionExample">
+            <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button 
+                class="accordion-button collapsed text-success fw-semibold" 
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#collapseOne" 
+                aria-expanded="false" 
+                aria-controls="collapseOne"
+                >
+                📝 Tata Cara Mengirim Donasi Barang
+                </button>
+            </h2>
+        
+            <div 
+                id="collapseOne" 
+                class="accordion-collapse collapse" 
+                aria-labelledby="headingOne" 
+                data-bs-parent="#accordionExample"
+            >
+                <div class="accordion-body">
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item">
+                    <strong>Bungkus barang yang ingin didonasikan</strong>
+                    <p>Pastikan barang dalam kondisi baik dan dibungkus dengan aman untuk mencegah kerusakan saat pengiriman.</p>
+                    </li>
+        
+                    <li class="list-group-item">
+                        <strong>Kirim barang ke alamat berikut:</strong>
+                        <div class="d-flex align-items-start justify-content-between mt-1">
+                            <p id="alamat-donasi" class="mb-0">{{ $proposal->user->name }}, {{ $proposal->address }}</p>
+                          <button onclick="copyAlamat()" class="btn btn-sm btn-outline-success ms-2">Salin</button>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item">
+                        <strong>Gunakan jasa ekspedisi yang tersedia</strong>
+                        <p class="m-0">Berikut jasa ekspedisi yang tersedia:</p>
+                        <ul class="mt-1">
+                          @foreach ($deliveryServices as $item)
+                            <li>{{ $item->name }}</li>
+                          @endforeach
+                        </ul>
+                    </li>
+                      
+        
+                    <li class="list-group-item">
+                    <strong>Isi Formulir Donasi di Website</strong>
+                    <ul class="mt-1">
+                        <li>Masukkan <strong>daftar barang yang didonasikan</strong></li>
+                        <li>Pilih <strong>jenis ekspedisi</strong> yang digunakan</li>
+                        <li>Masukkan <strong>nomor resi</strong> pengiriman sebagai bukti</li>
+                    </ul>
+                    </li>
+                </ol>
+                <div class="alert alert-warning mt-3" role="alert">
+                    Pastikan anda telah membayar ongkirnya.
+                </div>
+                </div>
+            </div>
             </div>
         </div>
 
@@ -109,6 +181,16 @@
 
 @section('custom_script')
 <script>
+    function copyAlamat() {
+      const alamat = document.getElementById('alamat-donasi').textContent;
+      navigator.clipboard.writeText(alamat).then(function () {
+        alert('Alamat berhasil disalin!');
+      }, function (err) {
+        alert('Gagal menyalin alamat.');
+      });
+    }
+</script>
+<script>
     let itemIndex = 1;
 
     function addItem() {
@@ -123,7 +205,7 @@
                         @foreach($proposalItemsUpdated as $item)
                             @if ($item->remaining_quantity > 0)
                                 <option value="{{ $item->name }}" data-remaining="{{ $item->remaining_quantity }}">
-                                    {{ $item->name . ' (' . $item->detail . ')' }}
+                                    {{ $item->name }}
                                 </option>
                             @endif
                         @endforeach

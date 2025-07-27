@@ -1,4 +1,4 @@
-@extends('layouts.donatur')
+@extends('layouts.penerima')
 
 @section('title', 'Profil')
 

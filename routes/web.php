@@ -1,15 +1,16 @@
 <?php
 
+use App\Http\Controllers\admin\ComplaintsController;
 use App\Http\Controllers\admin\DeliveryServicesController;
 use App\Http\Controllers\admin\DonationItemsController;
 use App\Http\Controllers\admin\DonationProposalsController;
 use App\Http\Controllers\admin\DonationTypesController;
+use App\Http\Controllers\admin\ItemTypesController;
 use App\Http\Controllers\admin\UsersController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\donatur\DonaturViewController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\penerima\PenerimaViewController;
 use App\Http\Controllers\admin\ShipmentsController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,12 +19,8 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/login', function(){
         return redirect('/');
     });
-
-    Route::get('/welcome', function(){
-        return view('welcome');
-    });
-    Route::get('/', [HomeController::class, 'loginView'])->name('login');
-    Route::get("/signin", [HomeController::class, 'signinView'])->name('home.signin');
+    Route::get('/', [AuthController::class, 'loginView'])->name('login');
+    Route::get("/signup", [AuthController::class, 'signupView'])->name('home.signin');
 
     Route::post('/', [AuthController::class, 'login'])->name('login.submit');
     Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
@@ -32,7 +29,7 @@ Route::middleware(['guest'])->group(function () {
 // Private route (semua butuh login)
 Route::middleware(['auth'])->group(function () {
     // ADMIN PAGES
-    Route::get('/admin', [AdminController::class, 'dashboardView'])->middleware('userAccess:admin')->name('admin.dashboard');
+    Route::get('/admin', [DashboardController::class, 'dashboardView'])->middleware('userAccess:admin')->name('admin.dashboard');
 
     Route::get('/admin/users', [UsersController::class, 'index'])->middleware('userAccess:admin')->name('admin.users');
     Route::get('/admin/users/tambah', [UsersController::class, 'create'])->middleware('userAccess:admin')->name('admin.tambahUser');
@@ -69,36 +66,49 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/donation-items/tambah', [DonationItemsController::class, 'store'])->middleware('userAccess:admin')->name('admin.storeDonationItem');
     Route::post('/admin/donation-items/update/{id}', [DonationItemsController::class, 'update'])->middleware('userAccess:admin')->name('admin.updateDonationItem');
     Route::post('/admin/donation-items/delete/{id}', [DonationItemsController::class, 'destroy'])->middleware('userAccess:admin')->name('admin.deleteDonationItem');
+    
+    Route::get('/admin/item-types', [ItemTypesController::class, 'index'])->middleware('userAccess:admin')->name('admin.itemTypes');
+    Route::get('/admin/item-types/tambah', [ItemTypesController::class, 'create'])->middleware('userAccess:admin')->name('admin.tambahItemType');
+    Route::get('/admin/item-types/{id}', [ItemTypesController::class, 'edit'])->middleware('userAccess:admin')->name('admin.editItemType');
+    Route::post('/admin/item-types/tambah', [ItemTypesController::class, 'store'])->middleware('userAccess:admin')->name('admin.storeItemType');
+    Route::post('/admin/item-types/update/{id}', [ItemTypesController::class, 'update'])->middleware('userAccess:admin')->name('admin.updateItemType');
+    Route::post('/admin/item-types/delete/{id}', [ItemTypesController::class, 'destroy'])->middleware('userAccess:admin')->name('admin.deleteItemType');
+
+    Route::get('/admin/complaints', [ComplaintsController::class, 'index'])->middleware('userAccess:admin')->name('admin.complaints');
+    Route::get('/admin/complaints/{id}', [ComplaintsController::class, 'show'])->middleware('userAccess:admin')->name('admin.detailComplaints');
 
     Route::get('/admin/shipments', [ShipmentsController::class, 'index'])->middleware('userAccess:admin')->name('admin.shipments');
     Route::get('/admin/shipment/{id}', [ShipmentsController::class, 'read'])->middleware('userAccess:admin')->name('admin.detailShipment');
 
     // DONATUR PAGES
     Route::get('/donatur', [DonaturViewController::class, 'index'])->middleware('userAccess:donatur')->name('donatur.index');
-    Route::get('/donatur/profil', [DonaturViewController::class, 'profile'])->name('donatur.profile');
+    Route::get('/donatur/proposal', [DonaturViewController::class, 'proposal'])->middleware('userAccess:donatur')->name('donatur.proposal');
+    Route::get('/donatur/profil', [DonaturViewController::class, 'profile'])->middleware('userAccess:donatur')->name('donatur.profile');
+    Route::get('/donatur/profil/edit', [DonaturViewController::class, 'editProfile'])->middleware('userAccess:donatur')->name('donatur.editProfile');
+    Route::post('/donatur/profil/update', [DonaturViewController::class, 'updateProfile'])->middleware('userAccess:donatur')->name('donatur.updateProfile');
     Route::get('/donatur/pengiriman', [DonaturViewController::class, 'pengiriman'])->middleware('userAccess:donatur')->name('donatur.pengiriman');
     Route::get('/donatur/pengiriman/{id}', [DonaturViewController::class, 'detailPengiriman'])->middleware('userAccess:donatur')->name('donatur.detailPengiriman');
-    Route::get('/donatur/{id}', [DonaturViewController::class, 'detailProposal'])->middleware('userAccess:donatur');
-    Route::get('/donatur/{id}/donasi', [DonaturViewController::class, 'donasi'])->middleware('userAccess:donatur')->name('donatur.donasi');
+    Route::get('/donatur/proposal/{id}', [DonaturViewController::class, 'detailProposal'])->middleware('userAccess:donatur')->name('donatur.detailProposal');
+    Route::get('/donatur/proposal/{id}/lapor', [DonaturViewController::class, 'laporan'])->middleware('userAccess:donatur')->name('donatur.lapor');
+    Route::post('/donatur/proposal/{id}/lapor', [DonaturViewController::class, 'laporanStore'])->middleware('userAccess:donatur')->name('donatur.storeLaporan');
+    Route::get('/donatur/proposal/{id}/donasi', [DonaturViewController::class, 'donasi'])->middleware('userAccess:donatur')->name('donatur.donasi');
     Route::post('/donatur/donasi', [DonaturViewController::class, 'donasiStore'])->middleware('userAccess:donatur')->name('donatur.donasiStore');
-    Route::get('/donatur/profil/edit', [DonaturViewController::class, 'editProfileView']);
-
-    Route::get('/donasi', [HomeController::class, 'donasiView']);
 
     // PENERIMA PAGES
-    Route::get('/penerima/home', [HomeController::class, 'homeView'])->middleware('userAccess:penerima');
-    Route::get('/penerima/galang-barang', [HomeController::class, 'galangBarangView']);
-    Route::get('/penerima/pengiriman', [HomeController::class, 'pengirimanView']);    
-    Route::get('/penerima/profil', [HomeController::class, 'profileView']);
-    Route::get('/penerima/profil/edit', [ProfileController::class, 'editProfileView']);
+    Route::get('/penerima', [PenerimaViewController::class, 'index'])->middleware('userAccess:penerima')->name('penerima.index');
+    Route::get('/penerima/proposal', [PenerimaViewController::class, 'proposal'])->middleware('userAccess:penerima')->name('penerima.proposal');   
+    Route::get('/penerima/proposal/tambah', [PenerimaViewController::class, 'tambahProposal'])->middleware('userAccess:penerima')->name('penerima.tambahProposal');   
+    Route::post('/penerima/proposal/tambah', [PenerimaViewController::class, 'storeProposal'])->middleware('userAccess:penerima')->name('penerima.storeProposal');   
+    Route::get('/penerima/profil', [PenerimaViewController::class, 'profile'])->middleware('userAccess:penerima')->name('penerima.profile');
+    Route::get('/penerima/profil/edit', [PenerimaViewController::class, 'editProfile'])->middleware('userAccess:penerima')->name('penerima.editProfile');
+    Route::post('/penerima/profil/update', [PenerimaViewController::class, 'updateProfile'])->middleware('userAccess:penerima')->name('penerima.updateProfile');
+    Route::get('/penerima/detail-donasi/{id}', [PenerimaViewController::class, 'detailDonasi'])->middleware('userAccess:penerima')->name('penerima.detailDonasi');
+    Route::get('/penerima/proposal/{id}', [PenerimaViewController::class, 'detailProposal'])->middleware('userAccess:penerima')->name('penerima.detailProposal');
+    Route::post('/penerima/proposal/{id}', [PenerimaViewController::class, 'nonaktifStatus'])->middleware('userAccess:penerima')->name('penerima.nonaktifStatus');
 
 
     // LOGOUT
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     
-});
-
-Route::fallback(function () {
-    return response()->json(['message' => 'Route fallback!']);
 });

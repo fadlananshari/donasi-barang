@@ -3,54 +3,77 @@
 namespace App\Http\Controllers\donatur;
 
 use App\Http\Controllers\Controller;
+use App\Models\Complaints;
 use App\Models\DeliveryService;
 use App\Models\DonationItem;
 use App\Models\DonationProposal;
+use App\Models\DonationType;
 use App\Models\Profile;
 use App\Models\ProposalItem;
 use App\Models\Shipment;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class DonaturViewController extends Controller
 {
     public function index() {
-        $proposals = DonationProposal::with(['donationType', 'user', 'proposalItems'])->where('status', true)->get();
-    
+        return view('pages.donatur.index');
+    }
+
+
+    public function proposal(Request $request)
+    {
+        // Ambil query awal
+        $query = DonationProposal::with(['donationType', 'user', 'proposalItems'])
+            ->where('status', true);
+        // dd($query, $request);
+        // Filter pencarian (judul atau lokasi)
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->search . '%')
+                ->orWhereHas('user', function ($q2) use ($request) {
+                    $q2->where('name', 'like', '%' . $request->search . '%');
+                });
+            });
+        }
+
+        // Filter jenis donasi
+        if ($request->filled('type')) {
+            $query->whereHas('donationType', function ($q) use ($request) {
+                $q->where('id', $request->type);
+            });
+        }
+
+        // Ambil hasil
+        $proposals = $query->get();
+
         // Ambil semua donation item terkait proposal
         $donations = DonationItem::whereIn('id_donation_proposal', $proposals->pluck('id'))->get();
-    
         $groupedDonations = $donations->groupBy('id_donation_proposal');
 
+        // Hitung statistik per proposal
         foreach ($proposals as $proposal) {
-            // Total barang dari proposal
-            $proposal->total_quantity = $proposal->proposalItems->sum(function ($item) {
-                return (int) $item->quantity;
-            });
-
-            // Ambil donation berdasarkan id proposal, jika tidak ada maka buat collection kosong
+            $proposal->total_quantity = $proposal->proposalItems->sum(fn($item) => (int) $item->quantity);
             $donationItems = $groupedDonations->get($proposal->id, collect());
-
-            // Total yang sudah didonasikan
-            $donatedQty = $donationItems->sum('quantity');
-
-            $proposal->donated_quantity = $donatedQty;
-
-            // Hitung persentase
+            $proposal->donated_quantity = $donationItems->sum('quantity');
             $proposal->donation_percent = $proposal->total_quantity > 0
-                ? round(($donatedQty / $proposal->total_quantity) * 100)
+                ? round(($proposal->donated_quantity / $proposal->total_quantity) * 100)
                 : 0;
         }
 
-        $proposals = $proposals->filter(function ($proposal) {
-            return $proposal->total_quantity != $proposal->donated_quantity;
-        });
-        
-        // dd($proposals);
+        // Hanya tampilkan proposal yang belum full donasi
+        $proposals = $proposals->filter(fn($p) => $p->total_quantity != $p->donated_quantity);
 
-        return view('pages.donatur.index', compact('proposals'));
+        // Ambil jenis donasi
+        $donationType = DonationType::where('status', 1)->get();
+
+        // dd($request, $donationType->pluck('name'));
+
+        return view('pages.donatur.proposal', compact('proposals', 'donationType'));
     }
+
 
     public function detailProposal($id) {
         // Ambil proposal beserta relasi terkait
@@ -79,8 +102,10 @@ class DonaturViewController extends Controller
         return view('pages.donatur.detailProposal', compact('proposal', 'donationItems', 'donatedGroupedByName'));
     }
 
-    public function donasi($id)
-    {
+    public function donasi($id){
+
+        $profile = Profile::where('id_user', Auth::user()->id)->firstOrFail();
+
         // Ambil proposal beserta relasi
         $proposal = DonationProposal::with(['donationType', 'user', 'proposalItems'])->findOrFail($id);
     
@@ -109,17 +134,19 @@ class DonaturViewController extends Controller
         //     $proposalItemsUpdated,
         //     $deliveryServices);
         // Kirim ke view
+
+        // dd($proposal);
         return view('pages.donatur.donasi', compact(
             'proposal',
             'donationItems',
             'donatedGroupedByName',
             'proposalItemsUpdated',
-            'deliveryServices'
+            'deliveryServices',
+            'profile'
         ));
     }
 
     public function donasiStore(Request $request) {
-        // dd($request);
         $validated = $request->validate([
             'id_profile' => 'required|exists:profiles,id',
             'id_donation_proposal' => 'required|exists:donation_proposals,id',
@@ -147,6 +174,8 @@ class DonaturViewController extends Controller
             ]);
         }
 
+        // dd($request);
+
         return redirect()->route('donatur.index');
     }
     
@@ -161,13 +190,15 @@ class DonaturViewController extends Controller
 
     public function pengiriman()
     {
-        $id_user = auth()->id();
+        // $id_user = auth()->id();
+
+        $profile = Profile::where('id_user', Auth::user()->id)->firstOrFail();
 
         $donationItems = DonationItem::with([
             'profile',
             'donationProposal.user',
             'shipment.deliveryService'
-        ])->where('id_profile', $id_user)->get();
+        ])->where('id_profile', $profile->id)->get();
         
         $trackingData = [];
         
@@ -194,7 +225,7 @@ class DonaturViewController extends Controller
             }
         }
 
-        // dd($courierCode, $trackingNumber, $trackingData);
+        // dd($id_user, $trackingNumber, $trackingData);
 
         return view('pages.donatur.pengiriman', [
             'donationItems' => $donationItems,
@@ -204,8 +235,80 @@ class DonaturViewController extends Controller
     }
     
     public function detailPengiriman($id){
-        return view('pages.donatur.detailPengiriman', ['id']);
+        $donationItem = DonationItem::with(['profile', 'shipment.deliveryService'])->findOrFail($id);
+
+        $response = Http::get('https://api.binderbyte.com/v1/track', [
+            'api_key' => env('BINDERBYTE_KEY'),
+            'courier' => $donationItem->shipment->deliveryService->code,
+            'awb' => $donationItem->shipment->tracking_number
+        ]);
+
+        $dataAPI = $response['data'];
+
+        // dd($donationItem, $response['data']);
+        return view('pages.donatur.detailPengiriman', compact('donationItem', 'dataAPI'));
     }
+
+    public function laporan($id){
+        $profile = Profile::where('id_user', auth()->id())->first();
+        $proposal = DonationProposal::with(['donationType', 'user', 'proposalItems'])->findOrFail($id);
+        // dd($id, $profile, $proposal);
+
+        return view('pages.donatur.laporan', ['id'=>$id, 'profile'=>$profile, 'proposal'=>$proposal]);
+    }
+
+    public function laporanStore(Request $request) {
+        // dd($request);
+        // Validasi input
+        $request->validate([
+            'id_donation_proposal' => 'required|exists:donation_proposals,id', // sesuaikan dengan tabel proposal
+            'id_profile' => 'required|exists:profiles,id', // sesuaikan juga jika nama tabel berbeda
+            'reason' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048', // max 2MB
+        ]);
+
+        // Simpan gambar ke storage
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('laporan_bukti', 'public'); // disimpan di storage/app/public/laporan_bukti
+        }
+
+        // Simpan ke database
+        Complaints::create([
+            'id_donation_proposal' => $request->id_donation_proposal,
+            'id_profile' => $request->id_profile,
+            'reason' => $request->reason,
+            'image' => $imagePath ?? null,
+        ]);
+
+        return redirect()->route('donatur.index')->with('success', 'Laporan berhasil dikirim.');
+    }
+
+    public function editProfile() {
+        $user = auth()->user();
+        $profile = $user->profile; // pastikan relasi `profile()` sudah dibuat
     
+        return view('pages.donatur.editProfile', compact('user', 'profile'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = auth()->user();
+        $profile = $user->profile;
+
+        $request->validate([
+            'name' => 'required|string|max:255|unique:profiles,name,' . $profile->id,
+            'phone_number' => 'required|string|max:20',
+            'address' => 'required|string',
+        ]);
+
+        $profile->update([
+            'name' => $request->name,
+            'phone_number' => $request->phone_number,
+            'address' => $request->address,
+        ]);
+
+        return redirect()->route('donatur.profile')->with('success', 'Profil berhasil diperbarui.');
+    }
+
     
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+    
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,9 +9,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+      <!-- PWA  -->
+    <meta name="theme-color" content="#6777ef"/>
+    <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
+    <link rel="manifest" href="{{ asset('/manifest.json') }}">
+
     <title>Dashboard &ndash; @yield("title")</title>
 
-    <link rel="icon" type="image/png" href="{{ asset('img/logo-barangkita.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('icon512_rounded.png') }}">
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -37,8 +42,8 @@
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
-                <div class="sidebar-brand-text mx-3">Admin</div>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+                <div class="sidebar-brand-text mx-3">BarangKita</div>
             </a>
 
             <!-- Divider -->
@@ -84,10 +89,18 @@
             </li>
 
             <!-- Nav Item -->
-            <li class="nav-item @yield("active-menu-item-types")">
+            <li class="nav-item @yield("active-menu-donation-types")">
                 <a class="nav-link" href="{{route('admin.donationTypes')}}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Jenis Donasi</span>
+                </a>
+            </li>
+
+            <!-- Nav Item -->
+            <li class="nav-item @yield("active-menu-item-types")">
+                <a class="nav-link" href="{{route('admin.itemTypes')}}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Jenis Barang</span>
                 </a>
             </li>
 
@@ -101,7 +114,7 @@
 
             <!-- Nav Item -->
             <li class="nav-item @yield("active-menu-complaints")">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{route('admin.complaints')}}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Komplain</span>
                 </a>
@@ -162,14 +175,9 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-danger"></i>
+                                    Keluar
                                 </a>
                             </div>
                         </li>
@@ -217,14 +225,14 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Apakah Anda Yakin Ingin Keluar??</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Apakah anda yakin ingin keluar?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">Pilih "Keluar" untuk menyelesaikan sesi.</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                    <button class="btn btn-success" type="button" data-dismiss="modal">Batal</button>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-danger">Keluar</button>
@@ -256,6 +264,24 @@
     </script>
 
     @yield('custom_js')
+
+    <script src="{{ asset('/sw.js') }}"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+          // Register a service worker hosted at the root of the
+          // site using the default scope.
+          navigator.serviceWorker.register("/sw.js").then(
+          (registration) => {
+            console.log("Service worker registration succeeded:", registration);
+          },
+          (error) => {
+            console.error(`Service worker registration failed: ${error}`);
+          },
+        );
+      } else {
+        console.error("Service workers are not supported.");
+      }
+    </script>
 
 </body>
 

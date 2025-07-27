@@ -1,0 +1,161 @@
+<svg width="1200" height="1400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="1400" fill="#ffffff" stroke="#000" stroke-width="2"/>
+  
+  <!-- Header -->
+  <rect x="20" y="20" width="1160" height="60" fill="none" stroke="#000" stroke-width="2"/>
+  
+  <!-- Logo -->
+  <rect x="40" y="35" width="120" height="30" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="100" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#000">BarangKita</text>
+  
+  <!-- Navigation -->
+  <rect x="900" y="35" width="60" height="20" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="930" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#000">Beranda</text>
+  
+  <rect x="970" y="35" width="60" height="20" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="1000" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#000">Proposal</text>
+  
+  <rect x="1040" y="35" width="70" height="20" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="1075" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#000">Pengiriman</text>
+  
+  <!-- User Icon -->
+  <circle cx="1140" cy="50" r="15" fill="none" stroke="#000" stroke-width="1"/>
+  
+  <!-- Hero Section -->
+  <rect x="20" y="100" width="1160" height="280" fill="none" stroke="#000" stroke-width="2"/>
+  
+  <!-- Hero Image Placeholder -->
+  <rect x="60" y="140" width="250" height="200" fill="none" stroke="#000" stroke-width="1"/>
+  <line x1="60" y1="140" x2="310" y2="340" stroke="#000" stroke-width="1"/>
+  <line x1="310" y1="140" x2="60" y2="340" stroke="#000" stroke-width="1"/>
+  <text x="185" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#000">[HERO IMAGE]</text>
+  
+  <!-- Hero Content -->
+  <text x="380" y="170" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000">Donasi Barang Jadi Lebih</text>
+  <text x="380" y="195" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000">Mudah di BarangKita</text>
+  
+  <rect x="380" y="210" width="400" height="40" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="390" y="225" font-family="Arial, sans-serif" font-size="10" fill="#000">BarangKita menghubungkan kebaikanmu dengan mereka yang</text>
+  <text x="390" y="240" font-family="Arial, sans-serif" font-size="10" fill="#000">membutuhkan. Mulai berdonasi sekarang dan bantu mereka yang kurang beruntung.</text>
+  
+  <!-- CTA Button -->
+  <rect x="380" y="270" width="120" height="35" fill="#000" stroke="#000" stroke-width="2"/>
+  <text x="440" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#fff">Donasi Sekarang</text>
+  
+  <!-- Features Section -->
+  <rect x="20" y="420" width="1160" height="300" fill="#f0f0f0" stroke="#000" stroke-width="2"/>
+  
+  <!-- Section Title -->
+  <text x="600" y="460" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#000">Apa Saja Fitur Utama BarangKita?</text>
+  
+  <!-- Feature Cards -->
+  <!-- Card 1 -->
+  <rect x="80" y="490" width="300" height="180" fill="#ffffff" stroke="#000" stroke-width="1"/>
+  <rect x="190" y="510" width="80" height="40" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="230" y="535" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#000">[ICON]</text>
+  <text x="230" y="570" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#000">Donasi Barang</text>
+  <rect x="100" y="580" width="260" height="60" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="110" y="595" font-family="Arial, sans-serif" font-size="9" fill="#000">Sumbangkan barang seperti pakaian, buku, alat</text>
+  <text x="110" y="610" font-family="Arial, sans-serif" font-size="9" fill="#000">sekolah, dan lainnya dengan mudah.</text>
+  
+  <!-- Card 2 -->
+  <rect x="450" y="490" width="300" height="180" fill="#ffffff" stroke="#000" stroke-width="1"/>
+  <rect x="560" y="510" width="80" height="40" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="600" y="535" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#000">[ICON]</text>
+  <text x="600" y="570" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#000">Lihat Proposal</text>
+  <rect x="470" y="580" width="260" height="60" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="480" y="595" font-family="Arial, sans-serif" font-size="9" fill="#000">Temukan lembaga atau individu yang mengajukan</text>
+  <text x="480" y="610" font-family="Arial, sans-serif" font-size="9" fill="#000">kebutuhan barang.</text>
+  
+  <!-- Card 3 -->
+  <rect x="820" y="490" width="300" height="180" fill="#ffffff" stroke="#000" stroke-width="1"/>
+  <rect x="930" y="510" width="80" height="40" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="970" y="535" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#000">[ICON]</text>
+  <text x="970" y="570" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#000">Pantau Donasi</text>
+  <rect x="840" y="580" width="260" height="60" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="850" y="595" font-family="Arial, sans-serif" font-size="9" fill="#000">Lihat progres pengumpulan dan distribusi barang</text>
+  <text x="850" y="610" font-family="Arial, sans-serif" font-size="9" fill="#000">secara real-time.</text>
+  
+  <!-- How to Donate Section -->
+  <rect x="20" y="760" width="1160" height="280" fill="#ffffff" stroke="#000" stroke-width="2"/>
+  
+  <!-- Section Title -->
+  <text x="600" y="800" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#000">Cara Donasi Barang</text>
+  
+  <!-- Step Cards -->
+  <!-- Step 1 -->
+  <rect x="80" y="830" width="250" height="160" fill="none" stroke="#000" stroke-width="1"/>
+  <rect x="190" y="850" width="30" height="30" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="205" y="870" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#000">1</text>
+  <text x="205" y="900" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#000">Pilih Proposal</text>
+  <rect x="100" y="910" width="210" height="60" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="110" y="925" font-family="Arial, sans-serif" font-size="9" fill="#000">Telusuri daftar proposal dan pilih</text>
+  <text x="110" y="940" font-family="Arial, sans-serif" font-size="9" fill="#000">kebutuhan yang ingin kamu bantu.</text>
+  
+  <!-- Step 2 -->
+  <rect x="370" y="830" width="250" height="160" fill="none" stroke="#000" stroke-width="1"/>
+  <rect x="480" y="850" width="30" height="30" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="495" y="870" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#000">2</text>
+  <text x="495" y="900" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#000">Kirim Barang</text>
+  <rect x="390" y="910" width="210" height="60" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="400" y="925" font-family="Arial, sans-serif" font-size="9" fill="#000">Kemas barang sesuai kebutuhan dan</text>
+  <text x="400" y="940" font-family="Arial, sans-serif" font-size="9" fill="#000">kirim ke alamat yang tertera di proposal.</text>
+  
+  <!-- Step 3 -->
+  <rect x="660" y="830" width="250" height="160" fill="none" stroke="#000" stroke-width="1"/>
+  <rect x="770" y="850" width="30" height="30" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="785" y="870" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#000">3</text>
+  <text x="785" y="900" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#000">Isi Formulir</text>
+  <rect x="680" y="910" width="210" height="60" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="690" y="925" font-family="Arial, sans-serif" font-size="9" fill="#000">Laporkan pengiriman melalui formulir</text>
+  <text x="690" y="940" font-family="Arial, sans-serif" font-size="9" fill="#000">donasi untuk verifikasi.</text>
+  
+  <!-- Step 4 -->
+  <rect x="950" y="830" width="200" height="160" fill="none" stroke="#000" stroke-width="1"/>
+  <rect x="1035" y="850" width="30" height="30" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="1050" y="870" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#000">4</text>
+  <text x="1050" y="900" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#000">Pantau Donasi</text>
+  <rect x="970" y="910" width="160" height="60" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="980" y="925" font-family="Arial, sans-serif" font-size="9" fill="#000">Lacak status dan dampak dari donasi</text>
+  <text x="980" y="940" font-family="Arial, sans-serif" font-size="9" fill="#000">secara langsung.</text>
+  
+  <!-- Call to Action Section -->
+  <rect x="20" y="1080" width="1160" height="150" fill="#f0f0f0" stroke="#000" stroke-width="2"/>
+  
+  <text x="600" y="1130" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#000">Ayo Berdonasi, Sekarang!</text>
+  
+  <rect x="200" y="1140" width="800" height="30" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="210" y="1155" font-family="Arial, sans-serif" font-size="10" fill="#000">Barang tak terpakai di rumahmu bisa jadi harapan baru bagi mereka yang membutuhkan. Mari donasikan hari ini dan wujudkan kebaikan nyata!</text>
+  
+  <!-- CTA Button -->
+  <rect x="550" y="1180" width="120" height="35" fill="#000" stroke="#000" stroke-width="2"/>
+  <text x="610" y="1200" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#fff">Donasi Sekarang</text>
+  
+  <!-- Footer -->
+  <rect x="20" y="1270" width="1160" height="110" fill="none" stroke="#000" stroke-width="2"/>
+  
+  <!-- Footer Content -->
+  <rect x="50" y="1290" width="200" height="70" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="60" y="1310" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#000">BarangKita</text>
+  <text x="60" y="1325" font-family="Arial, sans-serif" font-size="9" fill="#000">Platform donasi barang untuk membantu sesama.</text>
+  <text x="60" y="1340" font-family="Arial, sans-serif" font-size="9" fill="#000">Sumbangkan barang layak pakai dan wujudkan</text>
+  <text x="60" y="1355" font-family="Arial, sans-serif" font-size="9" fill="#000">perubahan nyata.</text>
+  
+  <rect x="300" y="1290" width="150" height="70" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="310" y="1310" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#000">Navigasi</text>
+  <text x="310" y="1325" font-family="Arial, sans-serif" font-size="9" fill="#000">- Donasi</text>
+  <text x="310" y="1340" font-family="Arial, sans-serif" font-size="9" fill="#000">- Pengiriman</text>
+  <text x="310" y="1355" font-family="Arial, sans-serif" font-size="9" fill="#000">- Profil</text>
+  
+  <rect x="500" y="1290" width="200" height="70" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="510" y="1310" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#000">Hubungi Kami</text>
+  <text x="510" y="1325" font-family="Arial, sans-serif" font-size="9" fill="#000">barangkita@gmail.com</text>
+  
+  <!-- Copyright -->
+  <text x="600" y="1370" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#000">© 2025 BarangKita. Semua hak dilindungi.</text>
+  
+  <!-- Wireframe Labels -->
+  <text x="20" y="15" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#666">LOW-FIDELITY WIREFRAME</text>
+  
+</svg>
