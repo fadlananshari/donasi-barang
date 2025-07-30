@@ -15,36 +15,16 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
+
 
 class DonaturViewController extends Controller
 {
     public function index() {
-        return view('pages.donatur.index');
-    }
-
-
-    public function proposal(Request $request)
-    {
+        
         // Ambil query awal
         $query = DonationProposal::with(['donationType', 'user', 'proposalItems'])
-            ->where('status', true);
-        // dd($query, $request);
-        // Filter pencarian (judul atau lokasi)
-        if ($request->filled('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('title', 'like', '%' . $request->search . '%')
-                ->orWhereHas('user', function ($q2) use ($request) {
-                    $q2->where('name', 'like', '%' . $request->search . '%');
-                });
-            });
-        }
-
-        // Filter jenis donasi
-        if ($request->filled('type')) {
-            $query->whereHas('donationType', function ($q) use ($request) {
-                $q->where('id', $request->type);
-            });
-        }
+            ->where('status', true)->latest()->take(5);
 
         // Ambil hasil
         $proposals = $query->get();
@@ -66,13 +46,69 @@ class DonaturViewController extends Controller
         // Hanya tampilkan proposal yang belum full donasi
         $proposals = $proposals->filter(fn($p) => $p->total_quantity != $p->donated_quantity);
 
-        // Ambil jenis donasi
-        $donationType = DonationType::where('status', 1)->get();
+        return view('pages.donatur.index', compact('proposals'));
+    }
 
-        // dd($request, $donationType->pluck('name'));
 
+    public function proposal(Request $request)
+    {
+        // Validasi dan bersihkan input
+        $search = trim($request->input('search'));
+        $type = $request->input('type');
+    
+        // Ambil semua jenis donasi aktif terlebih dahulu (untuk filter)
+        $donationType = DonationType::where('status', 1)->get(['id', 'name']);
+    
+        // Ambil proposal aktif + relasi penting
+        $query = DonationProposal::with(['donationType:id,name', 'user:id,name', 'proposalItems:id,id_donation_proposal,quantity'])
+            ->where('status', true);
+    
+        // Pencarian berdasarkan judul proposal atau nama user
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhereHas('user', fn($uq) => $uq->where('name', 'like', "%{$search}%"));
+            });
+        }
+    
+        // Filter berdasarkan jenis donasi (donation type)
+        if (!empty($type)) {
+            $query->where('id_donation_type', $type);
+        }
+    
+        // Ambil data proposals
+        $proposals = $query->get();
+    
+        if ($proposals->isEmpty()) {
+            return view('pages.donatur.proposal', [
+                'proposals' => collect(),
+                'donationType' => $donationType
+            ]);
+        }
+    
+        // Ambil semua DonationItem hanya untuk proposal yang ditemukan
+        $donations = DonationItem::select('id_donation_proposal', 'quantity')
+            ->whereIn('id_donation_proposal', $proposals->pluck('id'))
+            ->get()
+            ->groupBy('id_donation_proposal');
+    
+        // Optimasi perhitungan donasi
+        $proposals = $proposals->map(function ($proposal) use ($donations) {
+            $proposal->total_quantity = $proposal->proposalItems->sum(fn($item) => (int) $item->quantity);
+    
+            $donated_quantity = $donations->get($proposal->id)?->sum('quantity') ?? 0;
+            $proposal->donated_quantity = $donated_quantity;
+    
+            $proposal->donation_percent = $proposal->total_quantity > 0
+                ? round(($donated_quantity / $proposal->total_quantity) * 100)
+                : 0;
+    
+            return $proposal;
+        })->filter(fn($p) => $p->donated_quantity < $p->total_quantity);
+    
         return view('pages.donatur.proposal', compact('proposals', 'donationType'));
     }
+    
 
 
     public function detailProposal($id) {
@@ -190,48 +226,46 @@ class DonaturViewController extends Controller
 
     public function pengiriman()
     {
-        // $id_user = auth()->id();
-
-        $profile = Profile::where('id_user', Auth::user()->id)->firstOrFail();
-
+        $profile = Profile::where('id_user', Auth::id())->firstOrFail();
+    
         $donationItems = DonationItem::with([
             'profile',
             'donationProposal.user',
             'shipment.deliveryService'
         ])->where('id_profile', $profile->id)->get();
-        
+    
         $trackingData = [];
-        
-        // Loop semua item yang bisa dilacak
+    
         foreach ($donationItems as $item) {
             $shipment = $item->shipment;
             $deliveryService = $shipment->deliveryService ?? null;
-        
+    
             if ($shipment && $deliveryService) {
                 $courierCode = $deliveryService->code ?? null;
                 $trackingNumber = $shipment->tracking_number ?? null;
-            
+    
                 if ($courierCode && $trackingNumber) {
-                    $response = Http::get('https://api.binderbyte.com/v1/track', [
-                        'api_key' => env('BINDERBYTE_KEY'),
-                        'courier' => $courierCode,
-                        'awb' => $trackingNumber
-                    ]);
-                
-                    if ($response->successful() && $response['status'] == 200) {
-                        $trackingData[$item->id] = $response['data'];
-                    }
+                    $cacheKey = "tracking_{$courierCode}_{$trackingNumber}";
+    
+                    $trackingData[$item->id] = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($courierCode, $trackingNumber) {
+                        $response = Http::get('https://api.binderbyte.com/v1/track', [
+                            'api_key' => env('BINDERBYTE_KEY'),
+                            'courier' => $courierCode,
+                            'awb' => $trackingNumber
+                        ]);
+    
+                        return ($response->successful() && $response['status'] == 200)
+                            ? $response['data']
+                            : null;
+                    });
                 }
             }
         }
-
-        // dd($id_user, $trackingNumber, $trackingData);
-
+    
         return view('pages.donatur.pengiriman', [
             'donationItems' => $donationItems,
             'trackingData' => $trackingData,
         ]);
-
     }
     
     public function detailPengiriman($id){

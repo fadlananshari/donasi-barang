@@ -39,7 +39,7 @@
         <div class="mt-5">
             <p class="fw-semibold">Detail Kebutuhan</p>
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>Barang</th>
@@ -58,7 +58,7 @@
                             <td>
                                 {{ $donatedGroupedByName[$item->name] ?? 0 }}
                             </td>
-                            <td>{{ $item->quantity - ($donatedGroupedByName[$item->name] ?? 0) . " lagi" }}</td>
+                            <td>{{ $item->quantity - ($donatedGroupedByName[$item->name] ?? 0) }}</td>
                         </tr>
                         @endforeach
                         

@@ -28,6 +28,7 @@
     <div class="row w-100 rounded-4 overflow-hidden" style="max-width: 900px;">
       <!-- Left Column -->
       <div class="col-md-6 p-4 d-flex flex-column justify-content-center align-items-center text-center">
+        <h1 class="fw-bold text-success">BarangKita</h1>
         <img src="{{ asset('img/login.png') }}" alt="Hero Image" class="img-fluid hero-img mb-3" />
         <p class="fw-medium text-dark">
           Donasi dan terima barang bisa di <span class="fw-semibold text-success">BarangKita</span>

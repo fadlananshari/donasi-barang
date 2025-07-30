@@ -1,11 +1,10 @@
 const CACHE_NAME = 'offline-cache-v1';
-const OFFLINE_URL = '/offline.html';
 
 const FILES_TO_CACHE = [
-  '/',
-  OFFLINE_URL,
-  '/css/app.css',       // Tambahkan asset penting jika perlu
-  '/js/app.js',         // Tambahkan asset penting jika perlu
+  '/offline.html',
+  '/manifest.json',
+  '/icon512_maskable.png',
+  '/icon512_rounded.png'
 ];
 
 // Saat install: cache file offline dasar

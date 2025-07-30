@@ -12,8 +12,13 @@
 
   <title>@yield("title") &ndash; BarangKita</title>
   <link rel="icon" type="image/png" href="{{ asset('icon512_rounded.png') }}">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"></noscript>
+  {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"> --}}
+  <link rel="stylesheet" href="{{asset('/css/bootstrap-icons-1.13.1/bootstrap-icons.css')}}">
+
+  
   @yield('custom_link')
 
   <style>
@@ -29,12 +34,11 @@
   
 </head>
 <body class="d-flex flex-column min-vh-100">
-
   <!-- Navbar -->
   <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-success" href="{{ route('donatur.index') }}">
-        <img src="{{ asset('icon512_rounded.png') }}" alt="Logo" width="50">
+        <img src="{{ asset('icon512_rounded.png') }}" alt="Logo BarangKita" width="50">
         BarangKita
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTop">
@@ -43,23 +47,22 @@
       <div class="collapse navbar-collapse justify-content-end" id="navbarTop">
         <ul class="navbar-nav mb-2 mb-lg-0 text-center">
           <li class="nav-item my-auto">
-            <a class="nav-link text-secondary @yield('active-menu-home')" href="{{ route('donatur.index') }}">Beranda</a>
+            <a class="nav-link text-secondary @yield('active-menu-home')" href="{{ route('donatur.index') }}" aria-label="Halaman Beranda">Beranda</a>
           </li>
           <li class="nav-item my-auto">
-            <a class="nav-link text-secondary @yield('active-menu-donate')" href="{{ route('donatur.proposal') }}">Proposal</a>
+            <a class="nav-link text-secondary @yield('active-menu-donate')" href="{{ route('donatur.proposal') }}" aria-label="Halaman Proposal">Proposal</a>
           </li>
           <li class="nav-item my-auto">
-            <a class="nav-link text-secondary @yield('active-menu-delivery')" href="{{ route('donatur.pengiriman') }}">Pengiriman</a>
+            <a class="nav-link text-secondary @yield('active-menu-delivery')" href="{{ route('donatur.pengiriman') }}" aria-label="Halaman Pengiriman">Pengiriman</a>
           </li>
           <li class="nav-item my-auto">
             @auth
-              <a class="nav-link text-secondary @yield('active-menu-profile')" href="{{ route('donatur.profile') }}">
+              <a class="nav-link text-secondary @yield('active-menu-profile')" 
+                href="{{ route('donatur.profile') }}" 
+                aria-label="Profil Pengguna">
                 <i class="bi bi-person-circle fs-3 d-block"></i>
-              </a>
+              </a>         
             @endauth
-            @guest
-              <a class="btn btn-success px-3 py-1" href="{{ route('home.signin') }}">Daftar</a>
-            @endguest
           </li>
         </ul>
       </div>
@@ -84,10 +87,10 @@
         <div class="col-md-3 mb-3">
           <h6 class="fw-semibold">Navigasi</h6>
           <ul class="list-unstyled small">
-            <li><a href="{{ route('donatur.index') }}" class="text-muted text-decoration-none">Beranda</a></li>
-            <li><a href="{{ route('donatur.proposal') }}" class="text-muted text-decoration-none">Proposal</a></li>
-            <li><a href="{{ route('donatur.pengiriman') }}" class="text-muted text-decoration-none">Pengiriman</a></li>
-            <li><a href="{{ route('donatur.profile') }}" class="text-muted text-decoration-none">Profil</a></li>
+            <li><a href="{{ route('donatur.index') }}" class="text-muted text-decoration-none d-block py-2" aria-label="Link ke Beranda">Beranda</a></li>
+            <li><a href="{{ route('donatur.proposal') }}" class="text-muted text-decoration-none d-block py-2" aria-label="Link ke Proposal">Proposal</a></li>
+            <li><a href="{{ route('donatur.pengiriman') }}" class="text-muted text-decoration-none d-block py-2" aria-label="Link ke Pengiriman">Pengiriman</a></li>
+            <li><a href="{{ route('donatur.profile') }}" class="text-muted text-decoration-none d-block py-2" aria-label="Link ke Profil">Profil</a></li>            
           </ul>
         </div>
         <div class="col-md-3 mb-3">

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_donation_proposal')->constrained('donation_proposals');
             $table->foreignId('id_profile')->constrained('profiles');
-            $table->text('reason');
+            $table->string('reason');
+            $table->text('description');
             $table->string('image');
             $table->timestamps();
         });

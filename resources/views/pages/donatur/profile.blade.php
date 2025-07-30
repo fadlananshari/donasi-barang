@@ -42,21 +42,21 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" aria-describedby="modal-description">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Apakah anda yakin ingin keluar?</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Konfirmasi Keluar</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Klik "Keluar" jika anda ingin keluar</p>
+                <p id="modal-description">Klik "Keluar" jika Anda ingin mengakhiri sesi Anda.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" aria-label="Batalkan logout">Batal</button>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="btn btn-danger">Keluar</button>
+                    <button type="submit" class="btn btn-danger" aria-label="Konfirmasi logout">Keluar</button>
                 </form>
             </div>
         </div>
