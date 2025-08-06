@@ -5,23 +5,20 @@
 @section('active-menu-home', 'active text-success')
 
 @section('custom_css')
-    section h1 {
-      font-size: 2.5rem; /* Explicit heading size */
-    }
-
-    .hover-shadow {
-      box-shadow: 0 3px 3px rgba(0, 0, 0, 0.18);
-      transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .hover-shadow:hover {
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
-      transform: translateY(-4px);
-    }
-
-    .overflow-auto::-webkit-scrollbar {
-      display: none;
-    }
+  section h1 {
+    font-size: 2.5rem; /* Explicit heading size */
+  }
+  .hover-shadow {
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.18);
+    transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .hover-shadow:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    transform: translateY(-4px);
+  }
+  .overflow-auto::-webkit-scrollbar {
+    display: none;
+  }
 @endsection
 
 @section('content')
@@ -31,7 +28,7 @@
     {{-- HERO --}}
     <div class="row align-items-center mb-5 mx-3">
       <div class="col-md-5 mb-4 mb-md-0" data-aos="fade-right">
-        <img src="{{ asset('img/login.png') }}" alt="Ilustrasi Donasi Barang" class="img-fluid" />
+        <img src="{{ asset('img/login.svg') }}" alt="Ilustrasi Donasi Barang" class="img-fluid" />
       </div>
       <div class="col-md-6" data-aos="fade-left">
         <h1 class="display-5 fw-bold mb-3">Donasi Barang Jadi Lebih Mudah di <span class="text-success">BarangKita</span></h1>
@@ -129,7 +126,7 @@
     </div>
 
     {{-- CARA DONASI --}}
-    <section class="py-5 position-relative">
+    <section class="pt-5 pb-4 position-relative">
       <div class="container mb-5">
         <h2 class="text-center fw-bold mb-5">Cara Donasi Barang</h2>
 
@@ -159,7 +156,7 @@
     </section>
 
     {{-- CTA --}}
-    <div class="text-center mt-5 py-5 bg-success bg-opacity-10" data-aos="fade-up">
+    <div class="text-center mt-5 py-5 bg-success bg-opacity-10 px-2" data-aos="fade-up">
       <h2 class="fw-bold text-success">Ayo Berdonasi, Sekarang!</h2>
       <p class="text-muted mb-4">Barang tak terpakai di rumahmu bisa jadi harapan baru bagi mereka yang membutuhkan.  
       Mulai donasimu hari ini dan wujudkan kebaikan nyata!</p>

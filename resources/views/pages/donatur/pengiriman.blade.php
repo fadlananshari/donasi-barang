@@ -62,7 +62,7 @@
 
                         @if ($latest)
                             <div class="alert alert-success border-0 mt-3 mb-0">
-                                <p class="m-0 text-dark">
+                                <p class="m-0 text-success">
                                     <span class="fw-semibold">Status terbaru:</span> {{ $latest['desc'] }}
                                 </p>
                                 <small class="text-muted">

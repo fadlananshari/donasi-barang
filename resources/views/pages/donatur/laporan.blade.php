@@ -22,7 +22,13 @@
         <!-- Input Alasan -->
         <div class="mb-3">
             <label for="reason" class="form-label">Alasan</label>
-            <textarea class="form-control" id="reason" name="reason" rows="4" placeholder="Tuliskan alasan Anda..." required></textarea>
+            <input class="form-control" id="reason" name="reason" placeholder="Tuliskan alasan Anda..." required>
+        </div>
+
+        <!-- Input Alasan -->
+        <div class="mb-3">
+            <label for="reason" class="form-label">Deskripsi</label>
+            <textarea class="form-control" id="description" name="description" rows="4" placeholder="Tuliskan deskripsi detail dari alasan Anda..." required></textarea>
         </div>
     
         <!-- Upload Bukti Gambar -->

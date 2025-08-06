@@ -298,8 +298,11 @@ class DonaturViewController extends Controller
             'id_donation_proposal' => 'required|exists:donation_proposals,id', // sesuaikan dengan tabel proposal
             'id_profile' => 'required|exists:profiles,id', // sesuaikan juga jika nama tabel berbeda
             'reason' => 'required|string',
+            'description' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048', // max 2MB
         ]);
+
+        // dd($request);
 
         // Simpan gambar ke storage
         if ($request->hasFile('image')) {
@@ -311,6 +314,7 @@ class DonaturViewController extends Controller
             'id_donation_proposal' => $request->id_donation_proposal,
             'id_profile' => $request->id_profile,
             'reason' => $request->reason,
+            'description' => $request->description,
             'image' => $imagePath ?? null,
         ]);
 

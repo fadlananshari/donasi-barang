@@ -4,21 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="BarangKita adalah platform donasi barang terpercaya untuk membantu sesama. Galang dan sumbangkan barang dengan mudah dan transparan.">
 
-  <!-- PWA -->
+  {{-- PWA --}}
   <meta name="theme-color" content="#6777ef"/>
   <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
   <link rel="manifest" href="{{ asset('/manifest.json') }}">
 
-  <title>@yield("title") &ndash; BarangKita</title>
+  {{-- Favicon --}}
   <link rel="icon" type="image/png" href="{{ asset('icon512_rounded.png') }}">
+  <link rel="preload" as="image" href="{{ asset('icon512_rounded.png') }}" />
 
+  {{-- Title --}}
+  <title>@yield("title") &ndash; BarangKita</title>
+
+  {{-- Preload Bootstrap --}}
   <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"></noscript>
-  {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"> --}}
-  <link rel="stylesheet" href="{{asset('/css/bootstrap-icons-1.13.1/bootstrap-icons.css')}}">
 
-  
+  {{-- Bootstrap Icons --}}
+  <link rel="stylesheet" href="{{ asset('/css/bootstrap-icons-1.13.1/bootstrap-icons.css') }}">
+
+  {{-- Custom CSS --}}
   @yield('custom_link')
 
   <style>
@@ -39,7 +46,9 @@
     <div class="container">
       <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-success" href="{{ route('donatur.index') }}">
         <img src="{{ asset('icon512_rounded.png') }}" alt="Logo BarangKita" width="50">
-        BarangKita
+        <span class="d-none d-md-block">
+          BarangKita
+        </span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTop">
         <span class="navbar-toggler-icon"></span>

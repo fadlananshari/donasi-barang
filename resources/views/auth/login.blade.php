@@ -27,16 +27,16 @@
   <div class="container min-vh-100 d-flex align-items-center justify-content-center">
     <div class="row w-100 rounded-4 overflow-hidden" style="max-width: 900px;">
       <!-- Left Column -->
-      <div class="col-md-6 p-4 d-flex flex-column justify-content-center align-items-center text-center">
+      <div class="col-md-6 d-flex flex-column justify-content-center align-items-center text-center">
         <h1 class="fw-bold text-success">BarangKita</h1>
-        <img src="{{ asset('img/login.png') }}" alt="Hero Image" class="img-fluid hero-img mb-3" />
-        <p class="fw-medium text-dark">
+        <img src="{{ asset('img/login.png') }}" alt="Hero Image" class="img-fluid hero-img" />
+        <p class="fw-medium">
           Donasi dan terima barang bisa di <span class="fw-semibold text-success">BarangKita</span>
         </p>
       </div>
 
       <!-- Right Column -->
-      <div class="col-md-6 bg-white p-5">
+      <div class="col-md-6 bg-white">
         <h1 class="text-center fw-bold fs-4 text-dark pb-3">
           Login
         </h1>

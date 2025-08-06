@@ -45,6 +45,7 @@
                         <th>Nama Pengadu</th>
                         <th>Proposal</th>
                         <th>Alasan</th>
+                        <th>Deskripsi</th>
                         <th>Bukti Gambar</th>
                         <th>Aksi</th>
                     </tr>
@@ -55,6 +56,7 @@
                             <td>{{ $complaint->profile->name ?? '-' }}</td>
                             <td>{{ $complaint->proposal->title ?? '-' }}</td>
                             <td>{{ $complaint->reason }}</td>
+                            <td>{{ $complaint->description }}</td>
                             <td>
                                 @if($complaint->image)
                                     <a href="{{ asset('storage/' . $complaint->image) }}" target="_blank">

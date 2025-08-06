@@ -12,17 +12,16 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\donatur\DonaturViewController;
 use App\Http\Controllers\penerima\PenerimaViewController;
 use App\Http\Controllers\admin\ShipmentsController;
+use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 
 // Route login (hanya bisa diakses jika belum login)
 Route::middleware(['guest'])->group(function () {
-    Route::get('/login', function(){
-        return redirect('/');
-    });
-    Route::get('/', [AuthController::class, 'loginView'])->name('login');
+    Route::get('/', [PublicController::class, 'index'])->name('landingPage');
+    Route::get('/login', [AuthController::class, 'loginView'])->name('login');
     Route::get("/signup", [AuthController::class, 'signupView'])->name('home.signin');
 
-    Route::post('/', [AuthController::class, 'login'])->name('login.submit');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
     Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 });
 
@@ -105,6 +104,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/penerima/detail-donasi/{id}', [PenerimaViewController::class, 'detailDonasi'])->middleware('userAccess:penerima')->name('penerima.detailDonasi');
     Route::get('/penerima/proposal/{id}', [PenerimaViewController::class, 'detailProposal'])->middleware('userAccess:penerima')->name('penerima.detailProposal');
     Route::post('/penerima/proposal/{id}', [PenerimaViewController::class, 'nonaktifStatus'])->middleware('userAccess:penerima')->name('penerima.nonaktifStatus');
+    Route::get('/penerima/tambah-jenis-barang', [PenerimaViewController::class, 'tambahJenisBarang'])->middleware('userAccess:penerima')->name('penerima.tambahItemType');
+    Route::post('/penerima/jenis-barang/store', [PenerimaViewController::class, 'storeJenisBarang'])->middleware('userAccess:penerima')->name('penerima.storeItemType');
+
 
 
     // LOGOUT

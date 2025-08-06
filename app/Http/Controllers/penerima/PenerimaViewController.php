@@ -54,11 +54,6 @@ class PenerimaViewController extends Controller
                 : 0;
         }
 
-        // Filter hanya proposal yang belum 100% dipenuhi
-        $proposals = $proposals->filter(function ($proposal) {
-            return $proposal->total_quantity != $proposal->donated_quantity;
-        });
-
         return view('pages.penerima.proposal', compact('proposals'));
     }
 
@@ -119,6 +114,20 @@ class PenerimaViewController extends Controller
             DB::rollback();
             return back()->withErrors(['error' => 'Gagal menyimpan proposal: ' . $e->getMessage()])->withInput();
         }
+    }
+
+    public function tambahJenisbarang(){
+        return view('pages.penerima.tambahJenisBarang');
+    }
+
+    public function storeJenisbarang(Request $request){
+        $validated = $request->validate([
+            'name'   => 'required|string|max:100',
+        ]);
+    
+        ItemType::create($validated);
+
+        return redirect()->route('penerima.tambahProposal');
     }
 
     public function profile()

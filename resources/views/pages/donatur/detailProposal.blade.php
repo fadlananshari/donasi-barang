@@ -49,7 +49,9 @@
 
     <div class="mt-4">
         <p class="fw-semibold">Cerita Singkat</p>
-        <p class="m-0">{{$proposal->story}}</p>
+        <div style="white-space: pre-line;">
+            {{$proposal->story}}
+        </div>
     </div>
 
     <div class="mt-4">

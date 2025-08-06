@@ -20,7 +20,7 @@
     </div>
 
     <div class="list-group">
-        <a href="{{route('donatur.editProfile')}}" class="py-4 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <a href="{{route('penerima.editProfile')}}" class="py-4 list-group-item list-group-item-action d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
                 <i class="bi bi-pencil-square me-3 text-success"></i> <!-- Ikon -->
                 Edit Profil
